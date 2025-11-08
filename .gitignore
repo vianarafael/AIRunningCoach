@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Database
+data/*.db
+data/*.sqlite
+data/backups/
+*.db-journal
+
+# Logs
+logs/
+*.log
+
+# Configuration (contains secrets)
+accesslink-example-python/config.yml
+accesslink-example-python/usertokens.yml
+
+# Old data
+old_data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MCP
+.mcp/
+
