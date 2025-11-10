@@ -3,7 +3,8 @@
 
 import sys
 import re
-from polar_etl.notion_sleep import fetch_notion_database, get_notion_headers
+
+from polar_etl.notion_utils import NOTION_BASE_URL, get_notion_headers
 
 def extract_database_id_from_url(url: str) -> str:
     """Extract database ID from Notion URL"""
@@ -19,7 +20,6 @@ def extract_database_id_from_url(url: str) -> str:
 def test_notion_connection():
     """Test connection to Notion API"""
     import requests
-    from polar_etl.notion_sleep import NOTION_BASE_URL, get_notion_headers
     
     # Test with a simple API call
     url = f"{NOTION_BASE_URL}/users/me"
@@ -39,7 +39,6 @@ def test_notion_connection():
 def list_databases():
     """List accessible databases (requires search API)"""
     import requests
-    from polar_etl.notion_sleep import NOTION_BASE_URL, get_notion_headers
     
     url = f"{NOTION_BASE_URL}/search"
     headers = get_notion_headers()
@@ -80,9 +79,9 @@ if __name__ == "__main__":
         if db_id:
             print(f"Extracted database ID: {db_id}")
             print(f"\nAdd this to your config.yml:")
-            print(f"notion_sleep_db_id: {db_id}")
+            print(f"notion_running_db_id: {db_id}")
             print(f"\nOr set environment variable:")
-            print(f"export NOTION_SLEEP_DB_ID={db_id}")
+            print(f"export NOTION_RUNNING_DB_ID={db_id}")
         else:
             print("Could not extract database ID from URL")
             print("Please provide the database ID directly (32-char hex string)")
@@ -94,7 +93,7 @@ if __name__ == "__main__":
         if test_notion_connection():
             print("\n" + "=" * 50)
             print("\nTo get your database ID:")
-            print("1. Open your Notion sleep database")
+            print("1. Open your target Notion database (e.g., running tracker)")
             print("2. Copy the URL from your browser")
             print("3. Run: python -m polar_etl.test_notion <notion_url>")
             print("\nOr list all accessible databases:")

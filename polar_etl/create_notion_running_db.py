@@ -11,11 +11,8 @@ If parent_page_id is not provided, it will create the database in your workspace
 
 import sys
 import requests
-from pathlib import Path
-from polar_etl.notion_sleep import get_notion_headers, NOTION_BASE_URL
 
-import os
-NOTION_SECRET = os.getenv("NOTION_SECRET", "")
+from polar_etl.notion_utils import NOTION_BASE_URL, get_notion_headers
 
 
 def create_running_database(parent_page_id: str = None) -> dict:

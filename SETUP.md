@@ -47,20 +47,6 @@ python example_web_app.py
    ```
    Or add to your shell profile (`~/.zshrc` or `~/.bashrc`)
 
-#### Create Sleep Database
-
-1. Create a new database in Notion
-2. Add these properties:
-   - `Date` (Date) - Sleep date
-   - `Length` or `Sleep Hours` (Title/Rich Text/Number) - Sleep duration
-   - `Synced to ETL` (Checkbox) - Sync status
-3. Share the database with your integration
-4. Copy the database ID from the URL
-5. Add to `config.yml`:
-   ```yaml
-   notion_sleep_db_id: your_database_id
-   ```
-
 #### Create Running Database
 
 See `NOTION_RUNNING_SETUP.md` for detailed instructions.
@@ -125,7 +111,6 @@ You can use environment variables instead of config files:
 
 ```bash
 export NOTION_SECRET="your_notion_secret"
-export NOTION_SLEEP_DB_ID="your_sleep_db_id"
 export NOTION_RUNNING_DB_ID="your_running_db_id"
 ```
 

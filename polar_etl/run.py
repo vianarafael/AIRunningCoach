@@ -185,22 +185,6 @@ def main():
     
     sync_physical_info(accesslink, tokens)
 
-    # Sync sleep data from Notion (if database ID is configured)
-    notion_db_id = os.getenv("NOTION_SLEEP_DB_ID") or cfg.get("notion_sleep_db_id")
-    if notion_db_id:
-        try:
-            from polar_etl.notion_sleep import sync_notion_sleep_to_db
-            sync_notion_sleep_to_db(
-                notion_db_id,
-                date_field=cfg.get("notion_date_field", "Date"),
-                sleep_field=cfg.get("notion_sleep_field", "Sleep Hours"),
-                synced_field=cfg.get("notion_synced_field", "Synced to ETL")
-            )
-        except Exception as e:
-            print(f"Warning: Could not sync Notion sleep data: {e}")
-    else:
-        print("Notion sleep database ID not configured. Set NOTION_SLEEP_DB_ID env var or add notion_sleep_db_id to config.yml")
-
 
 if __name__ == "__main__":
     main()

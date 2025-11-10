@@ -1,11 +1,11 @@
 # AI Running Coach - Fitness Data ETL & MCP Server
 
-A simple system for syncing Polar fitness data and Notion sleep/running data into a local SQLite database, with an MCP (Model Context Protocol) server for easy access.
+A simple system for syncing Polar fitness data and optionally updating a Notion running database, with an MCP (Model Context Protocol) server for easy access.
 
 ## Features
 
 - **Polar API Integration**: Automatically syncs exercise sessions and fitness test data from Polar Flow
-- **Notion Integration**: Syncs sleep data from Notion and writes running progress/coaching data
+- **Notion Integration**: Writes running progress/coaching data to Notion
 - **Daily ETL**: Automated daily data extraction via cron jobs
 - **MCP Server**: FastMCP server exposing your fitness data via standardized tools
 - **Database Backups**: Automated daily database backups
@@ -60,17 +60,10 @@ Visit `http://localhost:8000` and follow the OAuth flow. This will create `usert
 
 1. Create a Notion Internal Integration at [notion.so/my-integrations](https://www.notion.so/my-integrations)
 2. Copy the Internal Integration Secret
-3. Create your sleep database and running database in Notion
-4. Share both databases with your integration
+3. Create (or identify) your running database in Notion
+4. Share the database with your integration
 5. Add to `accesslink-example-python/config.yml`:
    ```yaml
-   # Notion sleep database
-   notion_sleep_db_id: your_sleep_database_id
-   notion_date_field: Date
-   notion_sleep_field: Length  # or "Sleep Hours"
-   notion_synced_field: Synced to ETL
-   
-   # Notion running database
    notion_running_db_id: your_running_database_id
    ```
 
@@ -120,8 +113,8 @@ ai-running-coach/
 ├── polar_etl/                  # ETL scripts
 │   ├── db.py                   # Database operations
 │   ├── normalize.py            # Data normalization
-│   ├── notion_sleep.py         # Notion sleep sync
 │   ├── notion_running.py        # Notion running sync
+│   ├── notion_utils.py          # Shared Notion helpers
 │   └── run.py                  # Main ETL script
 ├── mcp/                        # MCP server
 │   └── server.py               # FastMCP server with tools
@@ -139,7 +132,7 @@ ai-running-coach/
 The MCP server exposes the following tools:
 
 - `get_recent_sessions(limit: int)` - Get recent running sessions
-- `get_recent_metrics(limit: int)` - Get recent daily metrics (HRV, RHR, VO₂, sleep)
+- `get_recent_metrics(limit: int)` - Get recent daily metrics (HRV, RHR, VO₂, weight, etc.)
 - `write_to_notion_running(...)` - Write running progress to Notion
 
 ## Using with Cursor (MCP Client)
@@ -190,13 +183,7 @@ For more details about MCP in Cursor, see the [Cursor MCP docs](https://docs.cur
 
 ## Notion Database Setup
 
-### Sleep Database
-Required fields:
-- `Date` (Date) - Sleep date
-- `Length` or `Sleep Hours` (Title/Rich Text/Number) - Sleep duration
-- `Synced to ETL` (Checkbox) - Sync status
-
-See `NOTION_RUNNING_SETUP.md` for running database structure.
+See `NOTION_RUNNING_SETUP.md` for running database structure and property expectations.
 
 ## Configuration
 
@@ -207,12 +194,6 @@ All configuration is in `accesslink-example-python/config.yml`:
 client_id: your_client_id
 client_secret: your_client_secret
 
-# Notion Sleep Database
-notion_sleep_db_id: your_database_id
-notion_date_field: Date
-notion_sleep_field: Length
-notion_synced_field: Synced to ETL
-
 # Notion Running Database
 notion_running_db_id: your_database_id
 ```
@@ -222,7 +203,6 @@ notion_running_db_id: your_database_id
 You can also use environment variables instead of config.yml:
 
 - `NOTION_SECRET` - Notion Internal Integration Secret
-- `NOTION_SLEEP_DB_ID` - Notion sleep database ID
 - `NOTION_RUNNING_DB_ID` - Notion running database ID
 
 ## Troubleshooting

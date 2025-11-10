@@ -2,7 +2,8 @@
 """Debug script to inspect Notion database structure"""
 
 import sys
-from polar_etl.notion_sleep import fetch_notion_database, extract_property_value
+
+from polar_etl.notion_utils import extract_property_value, fetch_notion_database
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

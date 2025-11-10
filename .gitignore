@@ -22,6 +22,7 @@ logs/
 # Configuration (contains secrets)
 accesslink-example-python/config.yml
 accesslink-example-python/usertokens.yml
+.env
 
 # Old data
 old_data/

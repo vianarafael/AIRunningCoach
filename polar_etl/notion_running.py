@@ -1,15 +1,17 @@
 # polar_etl/notion_running.py
 """Write running progress and coaching data to Notion"""
 
-import os
 import requests
 from datetime import datetime
 from typing import Dict, Optional, List
-from polar_etl.notion_sleep import get_notion_headers, NOTION_BASE_URL, NOTION_API_VERSION
 
-# Internal Integration Secret - set via NOTION_SECRET environment variable
-# This is a placeholder - should be set via environment variable
-NOTION_SECRET = os.getenv("NOTION_SECRET", "")
+from polar_etl.notion_utils import (
+    NOTION_API_VERSION,
+    NOTION_BASE_URL,
+    extract_property_value,
+    fetch_notion_database,
+    get_notion_headers,
+)
 
 
 def _normalize_status(status: str) -> str:
@@ -290,8 +292,6 @@ def update_running_page(
 
 def find_running_page_by_week(database_id: str, week: str) -> Optional[Dict]:
     """Find a page by week name"""
-    from polar_etl.notion_sleep import fetch_notion_database, extract_property_value
-    
     pages = fetch_notion_database(database_id)
     for page in pages:
         properties = page.get("properties", {})
